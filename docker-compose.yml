@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  my:
+    # 从当前路径构建镜像
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yefu/my:latest
+    ports:
+      - '22010:22010'
