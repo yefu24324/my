@@ -18,4 +18,4 @@ RUN pnpm install
 
 RUN pnpm build
 
-CMD pnpm start
+CMD pnpm preview
