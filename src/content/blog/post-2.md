@@ -1,0 +1,182 @@
+---
+title: GPG使用与介绍 & 并且应用到Git中实现签名提交Github
+excerpt: GPG（GNU Privacy Guard）是一种开源的加密软件，某天发现Github贡献代码中，项目管理者和我说提交的信息请使用GPG加签后提交。那天我把GPG是什么，怎么使用全都搞清楚了一遍
+publishDate: '2025/09/05'
+tags:
+  - Guide
+  - Technology
+---
+
+GPG（GNU Privacy Guard）是一种遵循OpenPGP标准的开源加密软件。我们可以用于加密内容，可以使用到文件、邮件等地方进行加密，例如加密了邮件后，除非有私钥不然谁也无法解密得知邮件中的内容。
+
+在使用 `git commit` 时，项目要求使用GPG签名有以下作用：
+
+1. **防篡改**  
+签名确保提交内容未被篡改，从提交时到验证时内容保持一致。
+2. **不可否认性**  
+提交者无法否认自己的签名，因为签名与私钥绑定，私钥由提交者持有。
+3. **透明性**  
+所有协作者和审核者都可以验证提交来源，提高项目透明度。
+
+Git 会使用在全局配置中的用户名和邮箱，如果其他人使用与你相同的用户名与邮箱，实际其他人无法真正分辨两者的提交是谁。面gpg密码中带有用户信息，且只有你拥有对应的密钥时才能解密信息，就能证明该提交的作者是你
+
+```shell
+git config --global user.name "Your Name"
+git config --global user.email "youremail@yourdomain.com"
+```
+
+**总结：**  
+GPG 签名在 Git 中提供了身份验证、数据完整性和不可否认性，是保障代码来源可信的有力工具。
+
+# 安装
+可以选择自安装gpg程序，也可以使用Git自带的gpg程序。如何选择就看你是否想要自己管理gpg密钥。
+
+如何选择看：
+
++ gpg4win：使用gpg4win可以用Gui界面方式操作，但需要自己安装和多一些配置步骤。
++ git：开发者自带且不用多一步配置，缺点是无界面
+
+密钥换电脑时会有需要备份或修改密钥中用户信息，已经gpg密钥支持增加子密钥多台电脑中使用，深入使用带有Gui程序会减少心智负担。不想深入使用什么配置都不配就好。
+
+## 安装方式一：Git Bash
+直接安装Git, 使用时需要使用Git Bash。
+
+## 安装方式二：Gpg4win
+下载地址:[Gpg4win - Get Gpg4win](https://gpg4win.org/get-gpg4win.html)
+
+安装时请选择Kleopatra, 我们将用kleopatra工具来管理Gpg密钥. 只安装gpg4win接下来的操作要用命令行了.
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1756969961934-28f7c4dd-c9b8-48c1-8ce4-422e0088a543.png)
+
+# 使用
+## 创建GPG密钥
+### kleopatra方式
+1. ![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743396217-8d573914-daf5-43a9-a8d1-e079241e1f60.png)
+2. 填写内容
++ ①：输入名字与邮件地址
++ ②：使用密码句保护生成的密钥（每次使用密钥时需要输入密码，即使别人获取到密钥也得输入正确密码才能使用）
++ ③：Key Material 选择加密算法，（可选可不选，我使用rsa4096的算法）
++ ④：valid until取消勾选（因为自用为了方便我选择不加有效期）
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743458048-a0ce44e5-e8b7-40f5-8c7d-99396a1eff91.png)
+
+3. 输入保护密码（两次）
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743757242-8bb95876-b677-4048-9aed-f63876813d16.png)
+
+4. 密钥太过简单时会出现提示，可直接选择take this one anyway通过（不要使用123456这样简单的密码）
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743790445-630c9e17-52d2-46a9-b870-000bd910648d.png)
+
+5. 创建成功
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743869110-f4a7ff53-ce09-4871-bfe7-5bb9626f46ab.png)
+
+
+
+### Git Bash方式
+打开Git Bash终端输入:
+
+```bash
+gpg --full-generate-key
+```
+
+按提示步骤，选择用rsa加密算法长度4096位的密钥对（密钥自用方便可选择无有效期）
+
+## Git设置
+### 步骤一：gpg程序位置（非使用Git Bash自带gpg程序时必须）
+因git bash自带gpg加密程序，git提交时默认使用自己的gpg加密，我们需要修改成kleopatra附带的程序。
+
+```shell
+# 当使用gpg4win时需此配置，使用git内置的gpg生成时不需要
+git config --global gpg.program <YOUR_GPG_PROGRAM>
+
+# 例：git config --global gpg.program "C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe"
+```
+
+> gpg程序路径在默认安装时，可以在文件管理中看kleopatra的同级目录
+>
+
+### 步骤二：自动使用gpg加签
+```shell
+git config --global commit.gpgsign true
+git config --global tag.gpgsign true
+```
+
+
+
+> PS这一步可选，但提交前commit命令添加参数（-s）
+>
+
+```shell
+git commit -s -m "_commit_message_"
+```
+
+### 步骤三：添加你的Gpg Key ID
+```bash
+git config --global user.signingkey <YOUR_GPG_KEY_ID>
+```
+
+不知如何获取Key ID时看
+
+**kleopatra 获取GPG_KEY_ID**
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745687345766-baaecf9b-a3c5-46da-aee4-6460d23fe8e9.png)
+
+**命令行 获取GPG_KEY_ID**
+
+输入命令打印
+
+```shell
+gpg --list-secret-keys --keyid-format=long
+```
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745687480531-bf4d4f48-72b5-428e-a7f3-7c8c5693d185.png)
+
+## GitCode GPG公钥设置
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745687837641-ce5efe1e-9529-46e2-85ac-c1ee96a982c7.png)
+
+> 复制出来的公钥末尾可能带有回车，需要删掉不然校验提示保存不了，密钥本身无错
+>
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745596495546-cfaf5181-4ac2-4395-a3e0-b0bc7e0e0dbc.png)
+
+## Github GPG公钥设置
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745687677413-8c4640da-a4af-4d6e-9caa-d2d24941c9cc.png)
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745687753575-133ff1e1-84e2-4684-9c70-73b99b12974d.png)
+
+# 效果
+## Git提交记录会显示加签标记
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745686144407-aeb32a38-a886-4033-a297-a05c96a71ab4.png)
+
+## Github提交记录显示
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745686250706-8ffe9418-aace-488a-9458-4f697c0b732c.png)
+
+
+
+# 其他
+## Git提交记录验证其他提交者
+1. 需要项目成员提供他的gpg公钥并导入(导入方式见:[导入他人gpg公钥到kleopatra](#so7x4))
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745742160344-b6b20ce7-22e1-4c69-ba6f-1128d4aa4723.png)
+
+拥有他人公钥后验证将变为绿标。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745742202404-3b047ae4-448d-4165-b02d-4851652daaff.png)
+
+查看绿标显示签名用户和邮箱
+
+## 导入他人gpg公钥到kleopatra
+1. 需要他人提供gpg公钥并导入
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745741689301-26f6aba5-6880-4152-b963-8527719fff0f.png)
+
+2. 认证
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745741760872-86411192-a53d-4389-921c-4f59e58705ff.png)
+
+3. 选择自己的认证方式
+
+![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745741795307-98a1de0e-21d3-4adb-86a2-c4bb56d49f84.png)
+
