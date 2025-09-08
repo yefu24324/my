@@ -1,20 +1,18 @@
-import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
+import solidJs from "@astrojs/solid-js";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'http://yefu24324.com',
-    server: {
-        host: true,
-        allowedHosts: ['yefu24324.com', 'host.docker.internal']
-    },
-    integrations: [
-        mdx(),
-        sitemap(),
-        tailwind({
-            applyBaseStyles: false
-        })
-    ]
+  integrations: [mdx(), sitemap(), solidJs()],
+  server: {
+    allowedHosts: ["yefu24324.com", "host.docker.internal"],
+    host: true,
+  },
+  site: "http://yefu24324.com",
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

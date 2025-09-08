@@ -5,6 +5,9 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "paths": {
+      "@components/*": ["./src/components/*"]
+    }
   }
 }
