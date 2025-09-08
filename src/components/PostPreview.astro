@@ -1,11 +1,12 @@
 ---
-import { type CollectionEntry } from 'astro:content';
-import ArrowRight from '../icons/ArrowRight.astro';
-import FormattedDate from './FormattedDate.astro';
+import type { CollectionEntry } from "astro:content";
 
-type Props = { post: CollectionEntry<'blog'>; class?: string; headingLevel?: 'h2' | 'h3' };
+import ArrowRight from "../icons/ArrowRight.astro";
+import FormattedDate from "./FormattedDate.astro";
 
-const { post, class: className, headingLevel = 'h2' } = Astro.props;
+type Props = { post: CollectionEntry<"blog">; class?: string; headingLevel?: "h2" | "h3" };
+
+const { post, class: className, headingLevel = "h2" } = Astro.props;
 const { title, publishDate, updatedDate, excerpt } = post.data;
 const TitleTag = headingLevel;
 ---

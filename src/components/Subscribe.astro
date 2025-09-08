@@ -1,6 +1,7 @@
 ---
-import Button from './Button.astro';
-import siteConfig from '../data/site-config';
+
+import siteConfig from "../data/site-config";
+import Button from "./Button.astro";
 
 const subscribe = siteConfig.subscribe;
 
@@ -31,7 +32,7 @@ const { class: className } = Astro.props;
                     type="email"
                     name="email"
                     id="email"
-                    class="w-full h-9 px-5 py-2 text-sm text-main bg-transparent border border-main rounded-full placeholder:text-main/60 focus:outline-none"
+                    class="w-full h-9 px-5 py-2 text-sm text-main bg-transparent border border-main rounded-full placeholder:text-main/60 focus:outline-hidden"
                     required=""
                     value=""
                     placeholder="Your email"
