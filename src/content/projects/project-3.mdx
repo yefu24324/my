@@ -1,0 +1,23 @@
+---
+title: '基于Solid的Astro MDX扩展组件'
+description: '使用SolidJs开发,为SolidJs和Astro提供文档网站所需要的Tailwind组件.此文档展示所有组件使用'
+publishDate: '2025/03/14'
+isFeatured: true
+---
+
+import { Steps, Step, StepIcon, StepTitle } from "../../components/mdx/steps";
+
+<Steps>
+  <Step>
+    <StepIcon>1</StepIcon>
+    <StepTitle>Install the following dependencies:</StepTitle>
+
+    ```
+    pnpm add motion solid-motion @solid-primitives/refs
+    ```
+  </Step>
+  <Step>
+    <StepIcon>2</StepIcon>
+    <StepTitle>Copy and paste the following code into your project:</StepTitle>
+  </Step>
+</Steps>
