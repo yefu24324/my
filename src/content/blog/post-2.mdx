@@ -7,6 +7,8 @@ tags:
   - Technology
 ---
 
+import { Steps, Step, StepIcon, StepTitle } from "../../components/mdx/steps";
+
 GPG（GNU Privacy Guard）是一种遵循OpenPGP标准的开源加密软件。我们可以用于加密内容，可以使用到文件、邮件等地方进行加密，例如加密了邮件后，除非有私钥不然谁也无法解密得知邮件中的内容。
 
 在使用 `git commit` 时，项目要求使用GPG签名有以下作用：
@@ -49,29 +51,42 @@ GPG 签名在 Git 中提供了身份验证、数据完整性和不可否认性�
 ![](https://cdn.nlark.com/yuque/0/2025/png/594794/1756969961934-28f7c4dd-c9b8-48c1-8ce4-422e0088a543.png)
 
 # 使用
+
 ## 创建GPG密钥
 ### kleopatra方式
-1. ![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743396217-8d573914-daf5-43a9-a8d1-e079241e1f60.png)
-2. 填写内容
-+ ①：输入名字与邮件地址
-+ ②：使用密码句保护生成的密钥（每次使用密钥时需要输入密码，即使别人获取到密钥也得输入正确密码才能使用）
-+ ③：Key Material 选择加密算法，（可选可不选，我使用rsa4096的算法）
-+ ④：valid until取消勾选（因为自用为了方便我选择不加有效期）
 
-![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743458048-a0ce44e5-e8b7-40f5-8c7d-99396a1eff91.png)
+<Steps>
+  <Step>
+    <StepIcon>1</StepIcon>
+    <StepTitle>新建 OpenGPG 密钥对</StepTitle>
+     ![](/blogs/post-2/create-openpgp-01.png)
+  </Step>
+  <Step>
+    <StepIcon>2</StepIcon>
+    <StepTitle>填写内容</StepTitle>
+    - ①：输入名字与邮件地址
+    - ②：使用密码句保护生成的密钥（每次使用密钥时需要输入密码，即使别人获取到密钥也得输入正确密码才能使用）
+    - ③：Key Material 选择加密算法，（可选可不选，我使用rsa4096的算法）
+    - ④：valid until取消勾选（因为自用为了方便我选择不加有效期）
 
-3. 输入保护密码（两次）
-
-![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743757242-8bb95876-b677-4048-9aed-f63876813d16.png)
-
-4. 密钥太过简单时会出现提示，可直接选择take this one anyway通过（不要使用123456这样简单的密码）
-
-![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743790445-630c9e17-52d2-46a9-b870-000bd910648d.png)
-
-5. 创建成功
-
-![](https://cdn.nlark.com/yuque/0/2025/png/594794/1745743869110-f4a7ff53-ce09-4871-bfe7-5bb9626f46ab.png)
-
+     ![](/blogs/post-2/create-openpgp-02.png)
+  </Step>
+  <Step>
+    <StepIcon>3</StepIcon>
+    <StepTitle>输入保护密码（两次）</StepTitle>
+     ![](/blogs/post-2/create-openpgp-03.png)
+  </Step>
+  <Step>
+    <StepIcon>4</StepIcon>
+    <StepTitle>如密钥太过简单时会出现提示，可直接选择take this one anyway跳过（不要使用123456这样简单的密码）</StepTitle>
+     ![](/blogs/post-2/create-openpgp-04.png)
+  </Step>
+  <Step>
+    <StepIcon>5</StepIcon>
+    <StepTitle>创建成功</StepTitle>
+     ![](/blogs/post-2/create-openpgp-05.png)
+  </Step>
+</Steps>
 
 
 ### Git Bash方式

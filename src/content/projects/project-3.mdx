@@ -5,12 +5,14 @@ publishDate: '2025/03/14'
 isFeatured: true
 ---
 
+使用SolidJs开发,为SolidJs和Astro提供文档网站所需要的Tailwind组件.此文档展示所有组件使用
+
 import { Steps, Step, StepIcon, StepTitle } from "../../components/mdx/steps";
 
 <Steps>
   <Step>
     <StepIcon>1</StepIcon>
-    <StepTitle>Install the following dependencies:</StepTitle>
+    <StepTitle>安装依赖:</StepTitle>
 
     ```
     pnpm add motion solid-motion @solid-primitives/refs
@@ -18,6 +20,10 @@ import { Steps, Step, StepIcon, StepTitle } from "../../components/mdx/steps";
   </Step>
   <Step>
     <StepIcon>2</StepIcon>
-    <StepTitle>Copy and paste the following code into your project:</StepTitle>
+    <StepTitle>复制并粘贴以下代码到你的项目中:</StepTitle>
+
+    ```js
+    console.log("hello world");
+    ```
   </Step>
 </Steps>
