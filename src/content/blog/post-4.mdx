@@ -1,0 +1,45 @@
+---
+title: 🚧 常用TypeScript高级类型体操 🚧
+excerpt: 常用TypeScript高级类型体操
+publishDate: '2025/09/16'
+tags:
+  - Guide
+  - Technology
+  - TypeScript
+---
+
+
+# 函数签名
+```ts
+interface ObjectMap {
+  button: HTMLButtonElement;
+  input: HTMLInputElement;
+  textarea: HTMLTextAreaElement;
+}
+
+function handleEvent(event: keyof ObjectMap) {
+  console.log(event); // button, input, textarea
+}
+
+handleEvent('button'); // button
+
+handleEvent('img'); // Error: 这里会发生类型错误
+```
+
+# 函数签名2
+```ts
+interface ObjectMap {
+  button: HTMLButtonElement;
+  input: HTMLInputElement;
+  textarea: HTMLTextAreaElement;
+}
+
+function pushEvent<T extends keyof ObjectMap>(event: T, element: ObjectMap[T]) {
+}
+
+// 传入button类型，element会被推断为HTMLButtonElement类型
+pushEvent('button', new HTMLButtonElement());
+
+```
+
+# 代理

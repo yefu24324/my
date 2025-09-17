@@ -1,7 +1,7 @@
 ---
-title: 'Alona Style'
+title: '🚧Alona Style'
 description: '一个为了满足我个人风格的封装方式，简洁又类型安全的封装，方法名与类型定义又能于后端服务保持极致的相似度。极致的解决多语言和Api封装时零散无关联的问题'
-publishDate: '2025/03/14'
+publishDate: '2025/10/1'
 isFeatured: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: '多人在线扫雷(yjs)'
+title: '🚧多人在线扫雷(yjs)'
 description: '多人在线扫雷游戏，基于yjs实现。'
 publishDate: '2025/03/12'
 isFeatured: true
