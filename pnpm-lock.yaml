@@ -21,8 +21,11 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(solid-js@1.9.9)(yaml@2.8.1)
       '@astrojs/starlight':
-        specifier: ^0.35.2
-        version: 0.35.2(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1))
+        specifier: ^0.35.3
+        version: 0.35.3(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1))
+      '@astrojs/starlight-tailwind':
+        specifier: ^4.0.1
+        version: 4.0.1(@astrojs/starlight@0.35.3(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1)))(tailwindcss@4.1.13)
       '@fontsource-variable/inter':
         specifier: ^5.2.6
         version: 5.2.6
@@ -95,8 +98,14 @@ packages:
       solid-devtools:
         optional: true
 
-  '@astrojs/starlight@0.35.2':
-    resolution: {integrity: sha512-curGghoW4s5pCbW2tINsJPoxEYPan87ptCOv7GZ+S24N3J6AyaOu/OsjZDEMaIpo3ZlObM5DQn+w7iXl3drDhQ==}
+  '@astrojs/starlight-tailwind@4.0.1':
+    resolution: {integrity: sha512-AOOEWTGqJ7fG66U04xTmZQZ40oZnUYe4Qljpr+No88ozKywtsD1DiXOrGTeHCnZu0hRtMbRtBGB1fZsf0L62iw==}
+    peerDependencies:
+      '@astrojs/starlight': '>=0.34.0'
+      tailwindcss: ^4.0.0
+
+  '@astrojs/starlight@0.35.3':
+    resolution: {integrity: sha512-z9MbODjZl/STU3PPU18iOTkLObJBw7PA8xMe5s+KPscQGL0LNZyQUYeClG+F1/em/k+2AsokGpVPta+aOTk1sg==}
     peerDependencies:
       astro: ^5.5.0
 
@@ -2556,7 +2565,12 @@ snapshots:
       - tsx
       - yaml
 
-  '@astrojs/starlight@0.35.2(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1))':
+  '@astrojs/starlight-tailwind@4.0.1(@astrojs/starlight@0.35.3(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1)))(tailwindcss@4.1.13)':
+    dependencies:
+      '@astrojs/starlight': 0.35.3(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1))
+      tailwindcss: 4.1.13
+
+  '@astrojs/starlight@0.35.3(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.6
       '@astrojs/mdx': 4.3.4(astro@5.13.5(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(rollup@4.50.0)(typescript@5.8.2)(yaml@2.8.1))
@@ -3864,7 +3878,7 @@ snapshots:
       hast-util-to-string: 3.0.1
       hast-util-whitespace: 3.0.0
       nth-check: 2.1.1
-      property-information: 7.0.0
+      property-information: 7.1.0
       space-separated-tokens: 2.0.2
       unist-util-visit: 5.0.0
       zwitch: 2.0.4

@@ -1,4 +1,6 @@
 import { defineCollection, z } from "astro:content";
+import { docsLoader } from "@astrojs/starlight/loaders";
+import { docsSchema } from "@astrojs/starlight/schema";
 import { glob } from "astro/loaders";
 
 const seoSchema = z.object({
@@ -45,4 +47,4 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { blog, pages, projects };
+export const collections = { blog, loader: docsLoader(), pages, projects, schema: docsSchema() };
