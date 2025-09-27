@@ -3,16 +3,18 @@ import solidJs from "@astrojs/solid-js";
 import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+import starlightThemeRapide from "starlight-theme-rapide";
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
-      customCss: ["./src/styles/office.css"],
+      customCss: ["./src/styles/global.css"],
+      plugins: [starlightThemeRapide()],
       title: "夜浮卿的个人博客和分享",
     }),
     // mdx(),
-    sitemap(),
+    // sitemap(),
     solidJs(),
   ],
   server: {
