@@ -47,4 +47,6 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { blog, loader: docsLoader(), pages, projects, schema: docsSchema() };
+export const collections = {
+  docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
+};
