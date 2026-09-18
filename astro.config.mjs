@@ -13,6 +13,7 @@ export default defineConfig({
         Hero: "./src/components/overrides/Hero.astro",
         PageFrame: "./src/components/overrides/PageFrame.astro",
         ThemeSelect: "./src/components/overrides/ThemeSelect.astro",
+        TwoColumnContent: "./src/components/overrides/TwoColumnContent.astro",
       },
       customCss: ["./src/styles/global.css", "./src/styles/base.css"],
       markdown: {
