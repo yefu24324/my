@@ -1,26 +1,44 @@
-import sitemap from "@astrojs/sitemap";
 import solidJs from "@astrojs/solid-js";
 import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
-import starlightThemeRapide from "starlight-theme-rapide";
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
-      customCss: ["./src/styles/global.css"],
-      plugins: [starlightThemeRapide()],
+      components: {
+        ContentPanel: "./src/components/overrides/ContentPanel.astro",
+        Header: "./src/components/overrides/Header.astro",
+        Hero: "./src/components/overrides/Hero.astro",
+        PageFrame: "./src/components/overrides/PageFrame.astro",
+        ThemeSelect: "./src/components/overrides/ThemeSelect.astro",
+      },
+      customCss: ["./src/styles/global.css", "./src/styles/base.css"],
+      markdown: {
+        processedDirs: ["./src/content/blog"],
+      },
+      plugins: [],
+      sidebar: [
+        {
+          items: [
+            // Each item here is one entry in the navigation menu.
+            { label: "Example Guide", slug: "guides/example" },
+          ],
+          label: "Guides",
+        },
+        {
+          items: [{ autogenerate: { directory: "reference" } }],
+          label: "Reference",
+        },
+      ],
+      social: [{ href: "https://github.com/withastro/starlight", icon: "github", label: "GitHub" }],
       title: "夜浮卿的个人博客和分享",
     }),
     // mdx(),
     // sitemap(),
     solidJs(),
   ],
-  server: {
-    allowedHosts: ["yefu24324.com", "host.docker.internal"],
-    host: true,
-  },
   site: "http://yefu24324.com",
   vite: {
     plugins: [tailwindcss()],

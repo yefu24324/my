@@ -1,0 +1,100 @@
+---
+import { marked } from "marked";
+
+import { sortItemsByDateDesc } from "../../utils/data-utils";
+import Button from "../Button.astro";
+import CustomImage from "../CustomImage.astro";
+import PostPreview from "../PostPreview.astro";
+import ProjectPreview from "../ProjectPreview.astro";
+import { getCollection } from "astro:content";
+
+const [hero] = await getCollection("hero");
+const posts = (await getCollection("blog")).sort(sortItemsByDateDesc);
+const featuredPosts = posts.filter(({ data }) => data.isFeatured);
+
+const projects = (await getCollection("projects")).sort(sortItemsByDateDesc);
+const featuredProjects = projects.filter(({ data }) => data.isFeatured);
+const titleClass = "text-theme-foreground font-serif text-2xl leading-tight font-medium sm:text-3xl";
+---
+
+<header class="mx-auto mb-12 flex w-full max-w-3xl items-center gap-4 sm:mb-16">
+  {hero.data.site.avatar?.src && (
+  <a href="/">
+    <CustomImage
+      class="aspect-square w-16 rounded-full object-cover sm:w-20"
+      {...hero.data.site.avatar}
+      fetchpriority="high"
+      height={80}
+      loading="eager"
+      sizes="80px"
+      width={80}
+      widths={[80, 160]}
+    />
+  </a>
+)}
+  <div class="grow">
+    {hero.data.site.avatar?.src ? (
+  <p class={titleClass}>{hero.data.site.title}</p>
+) : (
+  <a class={titleClass} href="/">
+    {hero.data.site.title}
+  </a>
+)}
+    {hero.data.site.subtitle && <p class="text-sm leading-tight">{hero.data.site.subtitle}</p>}
+  </div>
+</header>
+
+{(hero.data.title || hero.data.image?.src || hero.data.text || (hero.data.actions && hero.data.actions.length > 0)) && (
+  <section class="mb-16 flex w-full flex-col gap-8 sm:mb-24">
+    {hero.data.title && (
+      <h1 class="font-serif text-3xl leading-tight font-medium sm:text-5xl sm:leading-tight">{hero.data.title}</h1>
+    )}
+    {hero.data.image?.src && (
+      <figure>
+        <CustomImage
+          class="w-full"
+          {...hero.data.image}
+          fetchpriority="high"
+          loading="eager"
+          sizes="(min-width: 832px) 768px, calc(100vw - 32px)"
+          widths={[480, 640, 768, 1024, 1536]}
+        />
+        {hero.data.image.caption && (
+          <figcaption class="mt-1.5 text-xs sm:text-sm">{hero.data.image.caption}</figcaption>
+        )}
+      </figure>
+    )}
+    {hero.data.text && <div class="prose sm:prose-lg max-w-none" set:html={marked.parse(hero.data.text)} />}
+    {hero.data.actions && hero.data.actions.length > 0 && (
+      <div class="flex flex-wrap gap-4">
+        {hero.data.actions.map((action) => (
+          <Button href={action.href}>{action.text}</Button>
+        ))}
+      </div>
+    )}
+  </section>
+)}
+
+{featuredProjects?.length > 0 && (
+  <div class="mb-16 sm:mb-24">
+    <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Projects</h2>
+    {featuredProjects.map((project) => (
+      <ProjectPreview class="mb-10 sm:mb-12" headingLevel="h3" project={project} />
+    ))}
+    <div class="mt-12 sm:mt-16">
+      <Button href="/projects">View All Projects</Button>
+    </div>
+  </div>
+)}
+
+{featuredPosts?.length > 0 && (
+  <div class="mb-16 sm:mb-24">
+    <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Writing</h2>
+    {featuredPosts.map((post) => (
+      <PostPreview class="mb-10 sm:mb-12" headingLevel="h3" post={post} />
+    ))}
+    <div class="mt-12 sm:mt-16">
+      <Button href="/blog">View All Posts</Button>
+    </div>
+  </div>
+)}

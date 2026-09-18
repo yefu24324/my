@@ -1,0 +1,64 @@
+---
+import siteConfig from "../../data/site-config";
+import NavBrackets from "../NavBrackets.astro";
+import NavLink from "../NavLink.astro";
+import ThemeSelect from "./ThemeSelect.astro";
+
+const navLinks = siteConfig.headerNavLinks ?? [];
+---
+
+<nav aria-label="Primary navigation" class="relative min-h-10 pt-4 pb-12 sm:min-h-14 sm:pb-24 md:pt-8">
+  {navLinks.length > 0 && (
+  <div class="relative mx-auto w-full max-w-3xl" data-nav-root>
+    <button
+      aria-controls="menu-items"
+      aria-expanded="false"
+      aria-label="Open Menu"
+      class="menu-toggle relative z-30 -ml-1 flex h-8 w-8 cursor-pointer items-center justify-center md:hidden"
+    >
+      <span class="menu-toggle-icon relative h-px w-6 bg-current" />
+    </button>
+    <ul
+      class="menu max-md:bg-main max-md:border-main flex gap-6 max-md:absolute max-md:-top-2.5 max-md:-left-2.5 max-md:z-20 max-md:max-w-64 max-md:flex-col max-md:gap-1 max-md:border max-md:border-dashed max-md:px-3 max-md:pt-16 max-md:pb-10"
+      data-nav-menu
+      id="menu-items"
+    >
+      {navLinks.map((nav) => {
+        return (
+          <li>
+            <NavLink
+              class="text-main font-serif text-xl md:text-base"
+              data-nav-link
+              href={nav.href}
+            >
+              {nav.text}
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+    <NavBrackets />
+  </div>
+)}
+  <div class="absolute top-4 right-0 z-10 md:top-8">
+    <ThemeSelect />
+  </div>
+</nav>
+
+<script>
+import "../../scripts/nav-brackets";
+
+function menuToggle() {
+  const menu = document.querySelector(".menu");
+  const menuToggleBtn = document.querySelector(".menu-toggle");
+  menuToggleBtn?.addEventListener("click", () => {
+    const isMenuExpanded = menuToggleBtn.getAttribute("aria-expanded") === "true";
+    menuToggleBtn.classList.toggle("is-active");
+    menuToggleBtn.setAttribute("aria-expanded", isMenuExpanded ? "false" : "true");
+    menuToggleBtn.setAttribute("aria-label", isMenuExpanded ? "Open Menu" : "Close Menu");
+    menu?.classList.toggle("is-visible");
+  });
+}
+menuToggle();
+document.addEventListener("astro:after-swap", menuToggle);
+</script>

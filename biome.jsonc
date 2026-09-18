@@ -1,74 +1,116 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["**", "!dist", "!src/apis/demo.ts", "!src/App.css"]
+    "includes": ["**", "!!**/dist"],
   },
   "vcs": {
+    "enabled": true,
     "clientKind": "git",
     "defaultBranch": "main",
-    "enabled": true,
-    "useIgnoreFile": false
+    "useIgnoreFile": true,
   },
   "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
     "indentStyle": "space",
-    "lineWidth": 160
+    "indentWidth": 2,
+    "lineWidth": 120,
+    "lineEnding": "lf",
   },
   "linter": {
-    "domains": {
-      // 启用所有Solid规则
-      "solid": "all"
-    },
     "enabled": true,
     "rules": {
-      // 关闭无障碍检查
-      "a11y": "off",
+      "a11y": "off", // 关闭无障碍检查
       "style": {
         // biome默认严重性 https://biomejs.dev/linter/#change-rule-severity
-        "noShoutyConstants": "on"
+        "noShoutyConstants": "on",
       },
       "suspicious": {
         "noExplicitAny": "error",
-        "useAwait": "error"
-      }
-    }
+        "useAwait": "error",
+      },
+    },
   },
   "assist": {
     "actions": {
       "source": {
+        "noDuplicateClasses": "on",
         "organizeImports": {
           "level": "on",
           "options": {
             // 导入排序将分成两组, 最上面为依赖包, 下面是项目内部依赖
-            "groups": [["astro:*", "astro:*/**", ":NODE:", ":PACKAGE:"], ":BLANK_LINE:", [":ALIAS:", ":PATH:"]]
-          }
+            "groups": [[":NODE:", ":PACKAGE:"], ":BLANK_LINE:", [":ALIAS:", ":PATH:"], "**"],
+          },
         },
+        "useSortedInterfaceMembers": "on",
         "useSortedAttributes": "on",
         "useSortedKeys": "on",
-        "useSortedProperties": "on"
-      }
+        "useSortedProperties": "on",
+      },
     },
-    "enabled": true
+    "enabled": true,
   },
   "javascript": {
     "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    }
+      "unsafeParameterDecoratorsEnabled": true, // 允许使用实验性的参数装饰器
+    },
   },
   "json": {
     "assist": {
-      "enabled": false
-    }
+      "enabled": false, // 关闭JSON的assist
+    },
+  },
+  "html": {
+    "experimentalFullSupportEnabled": true, // 让Biome对Vue这样的html文件提供格式化
+    "parser": {
+      "interpolation": true, // 允许解析 {{ expression }} 这样的表达式
+    },
+    "formatter": {
+      "enabled": true,
+      "bracketSameLine": true, // 多行 HTML 标签的闭合括号延续到最后一行的末尾, 而不是让它们单独出现在下一行中
+      "selfCloseVoidElements": "always", // 保留空元素内部的斜杠 /
+    },
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true,
+    },
   },
   "overrides": [
+    // 让jsonc文件支持注释和尾随逗号
+    {
+      "includes": ["**/*.jsonc"],
+      "json": {
+        "parser": {
+          "allowComments": true,
+          "allowTrailingCommas": true,
+        },
+        "formatter": {
+          "trailingCommas": "all",
+        },
+      },
+    },
+    {
+      "includes": ["**/*.tsx"],
+      "linter": {
+        "domains": {
+          "solid": "all",
+        },
+      },
+    },
     {
       "includes": ["**/*.astro"],
       "linter": {
+        "domains": {
+          "astro": "all",
+        },
         "rules": {
           "correctness": {
-            "noUnusedImports": "off"
-          }
-        }
-      }
-    }
-  ]
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off",
+          },
+        },
+      },
+    },
+  ],
 }

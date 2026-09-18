@@ -1,7 +1,8 @@
-import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
 import { glob } from "astro/loaders";
+
+import { defineCollection, z } from "astro:content";
 
 const seoSchema = z.object({
   description: z.string().min(15).max(160).optional(),
@@ -47,6 +48,43 @@ const projects = defineCollection({
   }),
 });
 
+const hero = defineCollection({
+  loader: glob({ base: "./src/content", pattern: "hero.mdx" }),
+  schema: z.object({
+    actions: z
+      .array(
+        z.object({
+          href: z.string(),
+          text: z.string(),
+        }),
+      )
+      .optional(),
+    image: z
+      .object({
+        alt: z.string().optional(),
+        caption: z.string().optional(),
+        src: z.string(),
+      })
+      .optional(),
+    site: z.object({
+      avatar: z
+        .object({
+          alt: z.string().optional(),
+          src: z.string(),
+        })
+        .optional(),
+      subtitle: z.string().optional(),
+      title: z.string(),
+    }),
+    text: z.string().optional(),
+    title: z.string().optional(),
+  }),
+});
+
 export const collections = {
+  blog,
   docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
+  hero,
+  pages,
+  projects,
 };

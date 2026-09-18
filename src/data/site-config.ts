@@ -84,16 +84,16 @@ const siteConfig: SiteConfig = {
     // }
   ],
   hero: {
-    // image: {
-    //     src: '/hero2.jpg',
-    //     alt: 'A person sitting at a desk in front of a computer'
-    // },
     actions: [
       {
         href: "/contact",
         text: "联系方式",
       },
     ],
+    image: {
+      alt: "A person sitting at a desk in front of a computer",
+      src: "/hero2.jpg",
+    },
     text: "感谢访问我的网站，这个网站主要目的是展示我得意的作品。这些作品来自我的灵光一现和满足我练习的目的，每个作品都会有在线地址可以体验，我希望你会喜欢。如果同时给你了一些帮助，那恭喜你也恭喜我帮助到了你。",
     title: 'print!("你好世界。")',
   },
