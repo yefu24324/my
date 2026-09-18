@@ -33,7 +33,9 @@ jobs:
       run: |
         pnpm build
         SHORT_SHA=$(git rev-parse --short HEAD)
+        DEPLOY_DIR=/root/workspace/github-ci-deploy/blog
         echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
+        echo "DEPLOY_DIR=$DEPLOY_DIR" >> "$GITHUB_ENV"
         tar -czf "dist-$SHORT_SHA.tgz" -C dist .
       
     # 上传产物
@@ -51,7 +53,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         source: dist-${{ env.SHORT_SHA }}.tgz
-        target: "/root/workspace/github-ci-deploy/blog"
+        target: "${{ env.DEPLOY_DIR }}"
 
     # 解压产物到 current（临时目录解压 + 秒级切换），压缩包归档进 history
     - name: Activate
@@ -62,19 +64,6 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           set -e
-          cd /root/workspace/github-ci-deploy/blog
+          cd "${{ env.DEPLOY_DIR }}"
 
-          # 先解压到临时目录，避免解压过程中 current 处于半成品状态
-          rm -rf current.new
-          mkdir -p current.new history
-          tar -xzf dist-${{ env.SHORT_SHA }}.tgz -C current.new
-
-          # 秒级切换：旧目录改名 → 新目录就位 → 清理旧目录
-          rm -rf current.old
-          if [ -d current ]; then mv current current.old; fi
-          mv current.new current
-          rm -rf current.old
-
-          # 归档压缩包（命名格式 dist-{hash}-{年月日}），只保留最近 10 份
-          mv dist-${{ env.SHORT_SHA }}.tgz "history/dist-${{ env.SHORT_SHA }}-$(date +%Y%m%d).tgz"
-          ls -t history/*.tgz 2>/dev/null | tail -n +11 | xargs -r rm -f
+          bash deploy.sh "dist-${{ env.SHORT_SHA }}.tgz"
