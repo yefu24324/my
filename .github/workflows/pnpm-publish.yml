@@ -1,0 +1,80 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+     # 克隆代码
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # 设置Node环境
+    - uses: pnpm/setup@v1
+      with:
+        version: 12.4.1
+        runtime: node@26.9.0
+        cache: true
+
+    # 安装依赖
+    - name: Install dependencies
+      run: pnpm i
+
+    # 编译
+    - name: Build
+      run: |
+        pnpm build
+        SHORT_SHA=$(git rev-parse --short HEAD)
+        echo "SHORT_SHA=$SHORT_SHA" >> "$GITHUB_ENV"
+        tar -czf "dist-$SHORT_SHA.tgz" -C dist .
+      
+    # 上传产物
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist-${{ env.SHORT_SHA }}.tgz
+
+    # 部署
+    - name: Deploy
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        source: dist-${{ env.SHORT_SHA }}.tgz
+        target: "/root/workspace/github-ci-deploy/blog"
+
+    # 解压产物到 current（临时目录解压 + 秒级切换），压缩包归档进 history
+    - name: Activate
+      uses: appleboy/ssh-action@v1.2.5
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          set -e
+          cd /root/workspace/github-ci-deploy/blog
+
+          # 先解压到临时目录，避免解压过程中 current 处于半成品状态
+          rm -rf current.new
+          mkdir -p current.new history
+          tar -xzf dist-${{ env.SHORT_SHA }}.tgz -C current.new
+
+          # 秒级切换：旧目录改名 → 新目录就位 → 清理旧目录
+          rm -rf current.old
+          if [ -d current ]; then mv current current.old; fi
+          mv current.new current
+          rm -rf current.old
+
+          # 归档压缩包（命名格式 dist-{hash}-{年月日}），只保留最近 10 份
+          mv dist-${{ env.SHORT_SHA }}.tgz "history/dist-${{ env.SHORT_SHA }}-$(date +%Y%m%d).tgz"
+          ls -t history/*.tgz 2>/dev/null | tail -n +11 | xargs -r rm -f

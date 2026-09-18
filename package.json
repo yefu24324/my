@@ -37,5 +37,9 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",
     "@tailwindcss/typography": "^0.5.20"
+  },
+  "packageManager": "pnpm@12.4.1",
+  "engines": {
+    "node": ">=24 <25 || >=26"
   }
 }
