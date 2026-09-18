@@ -12,6 +12,8 @@ export default defineConfig({
         Header: "./src/components/overrides/Header.astro",
         Hero: "./src/components/overrides/Hero.astro",
         PageFrame: "./src/components/overrides/PageFrame.astro",
+        PageTitle: "./src/components/overrides/PageTitle.astro",
+        TableOfContents: "./src/components/overrides/TableOfContents.astro",
         ThemeSelect: "./src/components/overrides/ThemeSelect.astro",
         TwoColumnContent: "./src/components/overrides/TwoColumnContent.astro",
       },

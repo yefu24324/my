@@ -803,10 +803,6 @@
     margin: 0;
   }
 
-  .sl-markdown-content starlight-tabs .tablist-wrapper ~ [role="tabpanel"] > .expressive-code {
-    margin: -1rem;
-  }
-
   .sl-markdown-content starlight-tabs .tablist-wrapper ~ [role="tabpanel"] > .expressive-code .frame {
     --button-spacing: 0.4rem;
     border: 0;

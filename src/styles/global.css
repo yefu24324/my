@@ -11,18 +11,16 @@
 
 @layer base {
   :root {
-    --background: #f2f1ec;
-    --text-main: #171717;
-    --bg-main: #f2f1ec;
-    --bg-muted: #eae9e1;
-    --border-main: #171717;
+    --text-main: oklch(20.46% 0 0); /* #171717 */
+    --bg-main: oklch(95.75% 0.0067 97.35); /* #f2f1ec */
+    --bg-muted: oklch(93.26% 0.0107 100.83); /* #eae9e1 */
+    --border-main: oklch(20.46% 0 0); /* #171717 */
   }
   html[data-theme="dark"] {
-    --background: #171717;
-    --text-main: #f2f1ec;
-    --bg-main: #171717;
-    --bg-muted: #242424;
-    --border-main: #f2f1ec;
+    --text-main: oklch(95.75% 0.0067 97.35); /* #f2f1ec */
+    --bg-main: oklch(20.46% 0 0); /* #171717 */
+    --bg-muted: oklch(26.03% 0 0); /* #242424 */
+    --border-main: oklch(95.75% 0.0067 97.35); /* #f2f1ec */
   }
 
   /* Cyan */
@@ -70,7 +68,7 @@
 @layer lucode {
   :root[data-theme="dark"] {
     /* starlight gray scale */
-    --foreground: oklch(98.5% 0 0); /* neutral-50 */
+    --foreground: oklch(95.75% 0.0067 97.35); /* neutral-50 */
     --gray-1: oklch(98.5% 0 0); /* neutral-50 */
     --gray-2: oklch(87% 0 0); /* neutral-300 */
     --gray-3: oklch(70.8% 0 0); /* neutral-400 */
@@ -78,7 +76,7 @@
     --gray-5: oklch(37.1% 0 0); /* neutral-700 */
     --gray-6: oklch(26.9% 0 0); /* neutral-800 */
     --gray-7: oklch(20.5% 0 0); /* neutral-900 */
-    --background: oklch(14.5% 0 0); /* neutral-950 */
+    --background: oklch(20.46% 0 0);
 
     /* colors */
     --orange-low: oklch(40.8% 0.123 38.172);
@@ -100,7 +98,7 @@
 
   :root[data-theme="light"] {
     /* starlight gray scale */
-    --foreground: oklch(14.5% 0 0); /* neutral-950 */
+    --foreground: oklch(20.46% 0 0); /* neutral-950 */
     --gray-1: oklch(20.5% 0 0); /* neutral-900 */
     --gray-2: oklch(26.9% 0 0); /* neutral-800 */
     --gray-3: oklch(37.1% 0 0); /* neutral-700 */
@@ -108,7 +106,7 @@
     --gray-5: oklch(70.8% 0 0); /* neutral-400 */
     --gray-6: oklch(87% 0 0); /* neutral-300 */
     --gray-7: oklch(97% 0 0); /* neutral-100 */
-    --background: oklch(100% 0 0); /* white */
+    --background: oklch(95.75% 0.0067 97.35);
 
     /* colors */
     --orange-low: oklch(98% 0.016 73.684);
@@ -171,3 +169,9 @@
   }
 }
 */
+
+/* 锚点跳转落点：紧贴粘性头部（h-14 = 56px），让目标标题出现在内容区第一行；
+   用 :root 提高优先级覆盖 Starlight 默认的 html { nav-height + 1.5rem }（落点在头部下方 32px，会露出上一节文字） */
+:root {
+  scroll-padding-top: calc(var(--header-height) + 0.5rem);
+}

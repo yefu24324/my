@@ -1,0 +1,16 @@
+---
+const {
+  entry: { data },
+  pagination: { prev, next },
+} = Astro.locals.starlightRoute;
+
+const { title, description } = data;
+console.log(title, data);
+---
+
+<div class="flex flex-col min-w-0 w-full gap-4 pb-4">
+  <h1 class="text-[1.75em] font-semibold" id="_top">{title}</h1>
+  {description && <p slot="doc-title-description">{description}</p>}
+
+  <div class="border-b mb-4"></div>
+</div>

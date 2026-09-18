@@ -7,9 +7,12 @@ import ThemeSelect from "./ThemeSelect.astro";
 const navLinks = siteConfig.headerNavLinks ?? [];
 ---
 
-<nav aria-label="Primary navigation" class="relative min-h-10 pt-4 pb-12 sm:min-h-14 sm:pb-24 md:pt-8">
-  {navLinks.length > 0 && (
-  <div class="relative mx-auto w-full max-w-3xl" data-nav-root>
+<header class="sticky h-14 top-0 z-40">
+  <nav
+    aria-label="Primary navigation"
+    class="backdrop-blur-lg border-b transition-[box-shadow,background-color,border-radius] bg-background/80">
+    {navLinks.length > 0 && (
+  <div class="relative flex h-14 mx-auto w-full max-w-3xl items-center px-4" data-nav-root>
     <button
       aria-controls="menu-items"
       aria-expanded="false"
@@ -40,11 +43,11 @@ const navLinks = siteConfig.headerNavLinks ?? [];
     <NavBrackets />
   </div>
 )}
-  <div class="absolute top-4 right-0 z-10 md:top-8">
-    <ThemeSelect />
-  </div>
-</nav>
-
+    <div class="absolute top-3 right-0 z-10">
+      <ThemeSelect />
+    </div>
+  </nav>
+</header>
 <script>
 import "../../scripts/nav-brackets";
 
